@@ -15,3 +15,11 @@ variable "image_uri" {
   type = string
   
 }
+
+variable "rds_username" {
+  type = string
+}
+
+variable "rds_password" {
+  type = string 
+}

@@ -192,6 +192,12 @@ resource "aws_ecs_task_definition" "task" {
           hostPort      = 5000
         }
       ]
+      environment = [
+        { name = "DB_HOST", value = var.rds_endpoint },  # Obtendo o endpoint do RDS
+        { name = "DB_USER", value = var.rds_username },
+        { name = "DB_PASSWORD", value = var.rds_password },
+        { name = "DB_NAME", value = var.rds_db_name }
+      ]
     }
   ])
 }

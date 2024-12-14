@@ -19,3 +19,19 @@ variable "image_uri" {
 variable "target_group_arn" {
  type = string 
 }
+
+variable "rds_endpoint" {
+  type = string
+}
+
+variable "rds_username" {
+  type = string
+}
+
+variable "rds_password" {
+  type = string 
+}
+
+variable "rds_db_name" {
+  type = string
+}

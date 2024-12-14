@@ -1,0 +1,21 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Authors</title>
+</head>
+<body>
+    <h1>Authors List</h1>
+    <nav>
+        <a href="/">Home</a> |
+        <a href="/books">Books</a> |
+        <a href="/authors">Authors</a>
+    </nav>
+    <ul>
+        {% for author in authors %}
+            <li>{{ author[1] }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
