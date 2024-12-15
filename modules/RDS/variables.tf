@@ -10,7 +10,7 @@ variable "rds_storage_type" {
 
 variable "rds_instance_class" {
     type = string
-    default = "db.t2.micro"
+    default = "db.t3.micro"
 }
    
 variable "rds_username" {
@@ -30,17 +30,11 @@ variable "rds_identifier" {
     type = string
 }
 
-variable "rds_parameter_group_name" {
-    type = string
-}
+
 
 variable "rds_skip_final_snapshot" {
     type = bool
     default = true
-}
-
-variable "subnet_ids" {
-    type = list(string)
 }
 
 variable "vpc_id" {
@@ -51,4 +45,9 @@ variable "vpc_id" {
 variable "publicly_accessible" {
     type = bool
     default = false
+}
+
+variable "subnet_ids" {
+    type = list(string)
+  
 }

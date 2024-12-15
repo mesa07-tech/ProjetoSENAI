@@ -37,15 +37,14 @@ module "vpc" {
 module "rds" {
   source = "./modules/RDS"  
   vpc_id = module.vpc.vpc_id
-  subnet_ids = module.vpc.public_subnets
   rds_allocated_storage = 20
   rds_storage_type = "gp2"
-  rds_instance_class = "db.t2.micro"
+  rds_instance_class = "db.t3.micro"
   rds_username = var.rds_username
   rds_password = var.rds_password
   rds_port = 3306
   rds_identifier = lower("rds-${var.cluster_name}")
-  rds_parameter_group_name = "default.mysql5.7"
+  subnet_ids = module.vpc.public_subnets
 }
 
 #################ECS#################
@@ -61,6 +60,7 @@ module "ecs" {
   rds_username = var.rds_username
   rds_password = var.rds_password
   rds_db_name = "rds-${var.cluster_name}"
+
 }
 
 #################ALB#################
@@ -73,6 +73,7 @@ module "alb" {
   target_group_port    = 5000
   target_group_protocol = "HTTP"
   security_group_ids   = [module.ecs.sg_id]
+
 }
 
 #################WAF#################

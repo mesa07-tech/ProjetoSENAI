@@ -81,6 +81,12 @@ resource "aws_security_group" "ecs_node_sg" {
         protocol    = "tcp"
         cidr_blocks = ["0.0.0.0/0"]
     }
+    ingress {
+        from_port   = 3306
+        to_port     = 3306
+        protocol    = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
 }
 
 # --- EC2 TAMPLATE ---
@@ -113,7 +119,7 @@ resource "aws_autoscaling_group" "ecs" {
   vpc_zone_identifier       = var.public_subnets
   min_size                  = 2
   max_size                  = 2
-  health_check_grace_period = 0
+  health_check_grace_period = 120
   health_check_type         = "EC2"
   protect_from_scale_in     = false
 
@@ -136,7 +142,7 @@ resource "aws_autoscaling_group" "ecs" {
 }
 
 resource "aws_ecs_capacity_provider" "main" {
-  name = "demo-ecs-ec2"
+  name = "${var.cluster_name}-ecs-ec2"
 
   auto_scaling_group_provider {
     auto_scaling_group_arn         = aws_autoscaling_group.ecs.arn
@@ -193,7 +199,7 @@ resource "aws_ecs_task_definition" "task" {
         }
       ]
       environment = [
-        { name = "DB_HOST", value = var.rds_endpoint },  # Obtendo o endpoint do RDS
+        { name = "DB_HOST", value = var.rds_endpoint }, 
         { name = "DB_USER", value = var.rds_username },
         { name = "DB_PASSWORD", value = var.rds_password },
         { name = "DB_NAME", value = var.rds_db_name }
