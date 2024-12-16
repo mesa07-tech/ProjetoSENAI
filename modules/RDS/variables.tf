@@ -44,7 +44,7 @@ variable "vpc_id" {
 
 variable "publicly_accessible" {
     type = bool
-    default = false
+    default = true
 }
 
 variable "subnet_ids" {

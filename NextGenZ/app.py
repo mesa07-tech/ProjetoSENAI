@@ -6,9 +6,9 @@ app = Flask(__name__)
 
 # Configuração do banco de dados usando variáveis de ambiente
 DB_CONFIG = {
-    "host": os.getenv("DB_HOST", "localhost"),    
-    "user": os.getenv("DB_USER", "root"),          
-    "password": os.getenv("DB_PASSWORD", ""),      
+    "host": os.getenv("DB_HOST", "rds-cluster.c5c8ec46ag8f.us-east-1.rds.amazonaws.com"),    
+    "user": os.getenv("DB_USER", "admin"),          
+    "password": os.getenv("DB_PASSWORD", "admin123"),      
     "database": os.getenv("DB_NAME", "library")     
 }
 
@@ -16,14 +16,19 @@ def get_db():
     """Cria e retorna uma conexão com o banco de dados."""
     db = getattr(g, "_database", None)
     if db is None:
-        db = g._database = pymysql.connect(
-            host=DB_CONFIG["host"],
-            user=DB_CONFIG["user"],
-            password=DB_CONFIG["password"],
-            database=DB_CONFIG["database"],
-            cursorclass=pymysql.cursors.DictCursor
-        )
+        try:
+            db = g._database = pymysql.connect(
+                host=DB_CONFIG["host"],
+                user=DB_CONFIG["user"],
+                password=DB_CONFIG["password"],
+                database=DB_CONFIG["database"],
+                cursorclass=pymysql.cursors.DictCursor
+            )
+        except pymysql.MySQLError as e:
+            print(f"Erro ao conectar ao banco de dados: {e}")
+            raise e  # Propaga o erro para que o Flask o trate
     return db
+
 
 @app.teardown_appcontext
 def close_connection(exception):

@@ -36,6 +36,7 @@ resource "aws_db_instance" "rds" {
     port = var.rds_port
     identifier = var.rds_identifier
     skip_final_snapshot = var.rds_skip_final_snapshot
+    vpc_security_group_ids = [aws_security_group.rdssg.id]
 }
 
 
